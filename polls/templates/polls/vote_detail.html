@@ -1,0 +1,49 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Vote{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2>{{ question.question_text }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                        {% if answers|length == 0 %}
+                                            <textarea rows="5" cols="70" name="answer"></textarea>
+                                        {% else %}
+                                            {% for answer in answers %}
+                                                <label>
+                                                    {% if question.question_type == 'radio' %}
+                                                        <input type="radio" name="answer" value="{{ answer.id }}">
+                                                        {{ answer.answer_text }}
+                                                    {% elif question.question_type == 'checkbox' %}
+                                                        <input type="checkbox" name="answer" value="{{ answer.id }}">
+                                                        {{ answer.answer_text }}
+                                                    {% endif %}
+                                                </label>
+                                            {% endfor %}
+                                        {% endif %}
+                                </div>
+                                <input type="hidden" name="poll" value="{{ question.id }}">
+                                <button type="submit" class="btn btn-info">Submit</button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

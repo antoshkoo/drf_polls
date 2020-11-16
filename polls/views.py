@@ -1,51 +1,45 @@
-from rest_framework import generics
-from polls.models import Poll, PollsQuestion
-from polls.serializers import PollDetailSerializer, PollListSerializer, QuestionDetailSerializer, \
-    AnswerDetailSerializer, PollsAnswers, QuestionDetail, AnswerDetail
-from rest_framework import generics
+from django.shortcuts import render
 
-from polls.models import Poll, PollsQuestion
-from polls.serializers import PollDetailSerializer, PollListSerializer, QuestionDetailSerializer, \
-    AnswerDetailSerializer, PollsAnswers, QuestionDetail, AnswerDetail
+from .forms import CreatePollForm
+from .models import Poll, PollsQuestion, PollsAnswers
 
 
-class PollCreateView(generics.CreateAPIView):
-    serializer_class = PollDetailSerializer
+def home(request):
+    polls = Poll.objects.all()
+    context = {
+        'polls': polls
+    }
+    return render(request, 'polls/home.html', context)
 
 
-class PollListView(generics.ListAPIView):
-    serializer_class = PollListSerializer
-    queryset = Poll.objects.all()
+def vote(request, poll_id):
+    poll = Poll.objects.get(pk=poll_id)
+    questions = PollsQuestion.objects.filter(poll_id_id=poll_id)
+    context = {
+        'poll': poll,
+        'questions': questions,
+    }
+    return render(request, 'polls/vote.html', context)
 
 
-class PollDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = PollDetailSerializer
-    queryset = Poll.objects.all()
+def vote_detail(request, vote_id):
+    question = PollsQuestion.objects.get(pk=vote_id)
+    answers = PollsAnswers.objects.filter(question_id_id=vote_id)
+    context = {
+        'question': question,
+        'answers': answers,
+    }
+    return render(request, 'polls/vote_detail.html', context)
 
 
-class QuestionCreateView(generics.CreateAPIView):
-    serializer_class = QuestionDetailSerializer()
+def results(request, poll_id):
+    context = {}
+    return render(request, 'polls/results.html', context)
 
 
-class QuestionDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = QuestionDetailSerializer
-    queryset = PollsQuestion.objects.all()
-
-
-class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = QuestionDetail
-    queryset = PollsQuestion.objects.all()
-
-
-class AnswerCreateView(generics.CreateAPIView):
-    serializer_class = AnswerDetailSerializer
-
-
-class AnswerDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = AnswerDetailSerializer
-    queryset = PollsAnswers.objects.all()
-
-
-class AnswerDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = AnswerDetail
-    queryset = PollsAnswers.objects.all()
+# def create(request):
+#     form = CreatePollForm()
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'polls/create.html', context)

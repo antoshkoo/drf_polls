@@ -1,14 +1,11 @@
-from django.urls import path
+from django.contrib import admin
+from django.urls import path, include
+from polls import views as poll_views
 
-from polls.views import *
-
-app_name = 'poll'
 urlpatterns = [
-    path('poll/create/', PollCreateView.as_view()),
-    path('all/', PollListView.as_view()),
-    path('poll/detail/<int:pk>', PollDetailView.as_view()),
-    path('question/create/', QuestionCreateView.as_view()),
-    path('question/detail/<int:pk>', QuestionDetail.as_view()),
-    path('answer/create/', AnswerCreateView.as_view()),
-    path('answer/detail/<int:pk>', AnswerDetail.as_view()),
+    path('', poll_views.home, name='home'),
+    path('results/<poll_id>/', poll_views.results, name='results'),
+    # path('poll/create/', poll_views.create, name='poll'),
+    path('poll/<poll_id>/', poll_views.vote, name='poll'),
+    path('vote/<vote_id>/', poll_views.vote_detail, name='vote'),
 ]
