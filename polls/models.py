@@ -9,14 +9,10 @@ class Poll(models.Model):
     description = models.TextField(verbose_name='Описание')
     user_id = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
+    read_only_fields = ['date_start']
+
     def __str__(self):
         return f'{self.name}'
-
-    # @property
-    # def is_expired(self):
-    #     if datetime.now() > self.date_end:
-    #         return True
-    #     return False
 
 
 class PollsQuestion(models.Model):

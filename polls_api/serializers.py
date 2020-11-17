@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework import permissions
 
 from polls.models import Poll, PollsQuestion, PollsAnswers
 
@@ -10,7 +11,6 @@ class AnswerDetailSerializer(serializers.ModelSerializer):
 
 
 class PollDetailSerializer(serializers.ModelSerializer):
-    #answers = AnswerDetailSerializer(many=True, )
 
     class Meta:
         model = Poll
@@ -34,7 +34,6 @@ class AnswerDetail(serializers.ModelSerializer):
 
 class PollListSerializer(serializers.ModelSerializer):
     questions = QuestionDetailSerializer(many=True)
-    read_only_fields = ('date_start', )
 
     class Meta:
         model = Poll

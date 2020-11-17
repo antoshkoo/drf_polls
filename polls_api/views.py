@@ -16,5 +16,3 @@ class PollListView(generics.ListAPIView):
 class PollDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PollDetailSerializer
     queryset = Poll.objects.all()
-
-

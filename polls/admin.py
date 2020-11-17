@@ -7,6 +7,16 @@ from polls.models import Poll, PollsQuestion, PollsAnswers, PollsUserAnswers
 # Register your models here.
 
 
-@admin.register(Poll, PollsQuestion, PollsAnswers, PollsUserAnswers)
+@admin.register(PollsQuestion, PollsAnswers, PollsUserAnswers)
 class PollAdmin(ModelAdmin):
     pass
+
+
+@admin.register(Poll)
+class PollAdmin(ModelAdmin):
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['date_start ']
+        else:
+            return []
+
