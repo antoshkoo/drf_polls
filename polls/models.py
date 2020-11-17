@@ -4,13 +4,13 @@ from django.db import models
 
 class Poll(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название', unique=True)
-    date_start = models.DateTimeField(verbose_name='Дата начала', auto_now=True)
+    date_start = models.DateTimeField(verbose_name='Дата начала')
     date_end = models.DateTimeField(verbose_name='Дата окончания')
     description = models.TextField(verbose_name='Описание')
     user_id = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.id}, {self.name}'
+        return f'{self.name}'
 
     # @property
     # def is_expired(self):
@@ -35,7 +35,8 @@ class PollsQuestion(models.Model):
 
 class PollsAnswers(models.Model):
     user_id = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
-    question_id = models.ForeignKey(PollsQuestion, related_name='answers', on_delete=models.CASCADE)
+    question_id = models.ForeignKey(PollsQuestion, related_name='question_answers', on_delete=models.CASCADE)
+    poll_id = models.ForeignKey(Poll, related_name='poll_answers', on_delete=models.CASCADE)
     answer_text = models.CharField(max_length=500, verbose_name='Вариант ответа')
 
     def __str__(self):
@@ -44,10 +45,6 @@ class PollsAnswers(models.Model):
 
 class PollsUserAnswers(models.Model):
     user_id = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    poll_id = models.ForeignKey(Poll, related_name='polls_user_answers', on_delete=models.CASCADE)
     question_id = models.ForeignKey(PollsQuestion, on_delete=models.CASCADE)
     user_answer = models.TextField(verbose_name='Ответ')
-
-# class toprint():
-#     def __str__(self):
-#         self.question = Poll.objects.get(id=1)
-#         return self.question.name

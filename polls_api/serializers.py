@@ -15,14 +15,15 @@ class PollDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
         fields = ('id', 'name', 'description', 'date_start', 'date_end')
+        read_only_fields = ('date_start', )
 
 
 class QuestionDetailSerializer(serializers.ModelSerializer):
-    answers = AnswerDetailSerializer(many=True, )
+    question_answers = AnswerDetailSerializer(many=True, )
 
     class Meta:
         model = PollsQuestion
-        fields = ('id', 'question_type', 'question_text', 'answers', 'poll_id')
+        fields = ('id', 'question_type', 'question_text', 'question_answers')
 
 
 class AnswerDetail(serializers.ModelSerializer):
@@ -31,14 +32,9 @@ class AnswerDetail(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class QuestionDetail(serializers.ModelSerializer):
-    class Meta:
-        model = PollsQuestion
-        fields = ('id', 'question_type', 'question_text', 'poll_id')
-
-
 class PollListSerializer(serializers.ModelSerializer):
     questions = QuestionDetailSerializer(many=True)
+    read_only_fields = ('date_start', )
 
     class Meta:
         model = Poll

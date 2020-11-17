@@ -37,9 +37,9 @@ def results(request, poll_id):
     return render(request, 'polls/results.html', context)
 
 
-# def create(request):
-#     form = CreatePollForm()
-#     context = {
-#         'form': form
-#     }
-#     return render(request, 'polls/create.html', context)
+def create(request):
+    form = CreatePollForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'polls/create.html', context)
